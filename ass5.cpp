@@ -5,8 +5,8 @@
 ** GNU C++ Compiler on Linux
 */
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 int main()
