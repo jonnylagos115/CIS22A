@@ -15,17 +15,17 @@ using namespace std;
 int main()
 {
 	const unsigned short max_p = 400;
+	unsigned short	points, ass_p, lowest_p, total_p, 
+	percent_t, remainder, nbr_As, nbr_Bs, nbr_Cs, nbr_Ds,
+	nbr_Fs;
 	ifstream 		inputFile;
 	ofstream		outputFile;
 	stringstream	ss;
 	string			line, buffer;
 	char			grade;
-	unsigned short	points, ass_p, lowest_p, total_p, 
-	percent_t, remainder, nbr_As, nbr_Bs, nbr_Cs, nbr_Ds,
-	nbr_Fs;
 
 	nbr_As = nbr_Bs = nbr_Cs = nbr_Ds = nbr_Fs = 0;
-	inputFile.open("ass6data.txt");
+	inputFile.open("ass7data.txt");
 	outputFile.open("studentReport.txt");
 	if (inputFile.fail() || outputFile.fail()){
 		cout << "An error has occured when opening file\n";
@@ -33,33 +33,33 @@ int main()
 	}
 	outputFile << "Student   -----   Assignment Grades  -----  Ass  Mid  Fin LEx Total  Pct Gr" << endl;
 	outputFile << "--------  -- -- -- -- -- -- -- -- -- -- --  ---  ---  --- --- -----  --- --" << endl;
-	while (getline(inputFile, line)) //I read through the input file one line at a time in each iteration
+	while (getline(inputFile, line)) //I read through the input file one line at a time for each iteration
 	{
-		ss.str(line);
-		getline(ss, buffer, ' ');
+		ss.str(line); //inserted string line to a stream (stringstream)
+		getline(ss, buffer, ' '); //grabs a line, set delimiter to a space character
 		outputFile << buffer << setw(4);
 		ass_p = 0;
 		lowest_p = 20;
 		total_p = 0;
-		for (unsigned short i = 0; i < 11; i++){
+		for (unsigned short i = 0; i < 11; i++){ //writes all ass points to outputfile
 			getline(ss, buffer, ' ');
-			if (buffer.compare("") == 0) getline(ss, buffer, ' ');
-			points = stoi(buffer);
+			if (buffer.compare("") == 0) getline(ss, buffer, ' '); //In cases where there is two spaces inbetween each ass points (ass points as a single digit)
+			points = stoi(buffer); //stoi() accepts a string type as argument and converts it to an integral value, then its returned
 			ass_p += points;
-			if (lowest_p > points) lowest_p = points;
+			if (lowest_p > points) lowest_p = points; //Tracks the lowest point value
 			outputFile << buffer << setw(3);
 		}
 		ass_p -= lowest_p;
 		total_p += ass_p;
-		outputFile << setw(5) << ass_p << setw(5);
+		outputFile << setw(5) << ass_p << setw(5); 
 		for (unsigned short i = 0; i < 2; i++){
-			ss.ignore();
+			ss.ignore();	//ignores the next character to be read, in which this case, will always be a space character
 			getline(ss, buffer, ' ');
-			if (buffer.compare("") == 0) getline(ss, buffer, ' ');
+			if (buffer.compare("") == 0) getline(ss, buffer, ' '); 
 			total_p += stoi(buffer);
 			outputFile << buffer << setw(5);
 		}
-		getline(ss, buffer, '\r'); //carriage return is set to be delimiter at the end of stream
+		getline(ss, buffer, '\r'); //carriage return is set to be delimiter at the end of current stringstream
 		total_p += stoi(buffer);
 		outputFile << setw(4) << buffer << setw(6) << total_p;
 		percent_t = round((static_cast<float>(total_p) / static_cast<float>(max_p)) * static_cast<float>(100));
