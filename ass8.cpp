@@ -9,7 +9,7 @@
 #include <ctime>
 using namespace std;
 
-unsigned short  roll_dice();
+void    roll_dice(unsigned short numberOfRolls, unsigned short& sum);
 unsigned short  Larrys_turn(unsigned short ret_sum = 0);
 unsigned short  Curlys_turn(unsigned short ret_sum = 0);
 unsigned short  Moes_turn(unsigned short ret_sum = 0);
@@ -23,9 +23,10 @@ int main()
 	{
         check_winner = Larrys_turn();
         check_winner = Curlys_turn();
-        check_winner = Moes_turn();
+        //check_winner = Moes_turn();
 		if (check_winner == 0) cout << endl;
-	}while (check_winner == 0)
+		abort();
+	}while (check_winner == 0);
 	switch (check_winner)
 	{
 	    case 1:
@@ -60,16 +61,16 @@ void    roll_dice(unsigned short numberOfRolls, unsigned short& sum)
                  cout << "SKUNK" << endl;
                  sum = 0; //reset total point of player
             }
+            break ;
         }
         else
-            sum = rand_dice1 + rand_dice2;
-        cout << "* You rolled " << rand_dice1 << " and "
-        << rand_dice2 << ".  That's ";
-        if (!sum) break;
+            sum = rd1 + rd2;
+        cout << "* You rolled " << rd1 << " and "
+        << rd2 << ".  That's " << sum << endl;
     }
 }
 
-unsigned short Larrys_turn(int ret_sum)
+unsigned short Larrys_turn(unsigned short ret_sum)
 {
     static unsigned short c_tpoints;
 
@@ -84,7 +85,7 @@ unsigned short Larrys_turn(int ret_sum)
         return 0;
 }
 
-unsigned short Curlys_turn(int ret_sum)
+unsigned short Curlys_turn(unsigned short ret_sum)
 {
     static unsigned short c_tpoints;
 
@@ -99,14 +100,15 @@ unsigned short Curlys_turn(int ret_sum)
         return 0;
 }
 
-unsigned short Moes_turn(int ret_sum)
+unsigned short Moes_turn(unsigned short ret_sum)
 {
     static unsigned short c_tpoints;
 
     if (ret_sum != 0)
         return c_tpoints;
     cout << "Moe, its your turn " << endl;
-    roll_dice(1, c_tpoints);
+    while (c_tpoints >= 100 || c_tpoints)
+        roll_dice(1, c_tpoints);
     cout << "Total points = " << c_tpoints;
     if (c_tpoints >= 100)
         return 3;
